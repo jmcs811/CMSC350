@@ -1,86 +1,100 @@
 package com.jcaseydev;
 
-import java.util.ArrayList;
-import java.util.List;
+/////////////////////////////
+// Justin Casey
+// CMSC 350
+// August 29, 2019
+//
+// This class will evaluate
+// infix expressions. This
+// is accomplished by using
+// two stacks.
+
+import java.util.EmptyStackException;
 import java.util.Stack;
-import java.util.regex.Pattern;
 
 class Infix {
 
-  private static final String LEFT_PAREN = "(";
-  private static final String RIGHT_PAREN = ")";
-  private Stack<String> operand = new Stack<>();
-  private Stack<String> operators = new Stack<>();
-  
-  String evaluate(String equation) {
-    List<String> tokens = new ArrayList<>();
+  private static final char LEFT_PAREN = '(';
+  private static final char RIGHT_PAREN = ')';
 
-    for (int i = 0; i < equation.length(); i++) {
-      tokens.add(Character.toString(equation.charAt(i)));
-    }
-    
-    for (String token : tokens) {
-      Pattern operatorsPattern = Pattern.compile("[*/+\\-]");
-      Pattern operandPat = Pattern.compile("[\\d.?]+");
+  static int evaluate(String expression) throws DivideByZeroException, EmptyStackException {
+    char[] tokens = expression.toCharArray();
 
-      if (token.matches(String.valueOf(operandPat))) {
-        operand.push(token);
-      } else if (token.equals(LEFT_PAREN)) {
-        operators.push(token);
-      } else if (token.equals(RIGHT_PAREN)) {
-        while (!operators.peek().equals(LEFT_PAREN)) {
-          operand.push(calculation(operand.pop(), operators.pop(), operand.pop()));
+    // Stacks to hold values and ops
+    Stack<Integer> values = new Stack<>();
+    Stack<Character> ops = new Stack<>();
+
+    for (int i = 0; i < tokens.length; i++) {
+      // if current token is a space, ignore it
+      if (tokens[i] == ' ') {
+        continue;
+      }
+
+      // if current token is a number, push it onto values stack
+      if (tokens[i] >= '0' && tokens[i] <= '9') {
+        StringBuilder stringBuffer = new StringBuilder();
+        while (i < tokens.length && tokens[i] >= '0' && tokens[i] <= '9') {
+          stringBuffer.append(tokens[i++]);
         }
-        operators.pop();
-      } else if (token.matches(String.valueOf(operatorsPattern))) {
-        while (!operators.empty() && precedence(operators.peek()) >= precedence(token)) {
-          operand.push(calculation(operand.pop(), operators.pop(), operand.pop()));
+        i--;
+
+        values.push(Integer.parseInt(stringBuffer.toString()));
+      }
+
+      // if opening parentheses push onto ops
+      else if (tokens[i] == LEFT_PAREN) {
+        ops.push(tokens[i]);
+      }
+
+      // if closing parentheses, solve the equation
+      else if (tokens[i] == RIGHT_PAREN) {
+        while (ops.peek() != LEFT_PAREN) {
+          values.push(calculate(values.pop(), ops.pop(), values.pop()));
         }
-        operators.push(token);
+        ops.pop();
+      } else if (tokens[i] == '+' || tokens[i] == '-' || tokens[i] == '*' || tokens[i] == '/') {
+        while (!ops.empty() && precedence(tokens[i], ops.peek())) {
+          values.push(calculate(values.pop(), ops.pop(), values.pop()));
+        }
+        // remove the LEFT paren
+        ops.push(tokens[i]);
       }
     }
 
-    while (!operators.empty()) {
-      operand.push(calculation(operand.pop(), operators.pop(), operand.pop()));
+    // finish what ever is left on the stacks
+    while (!ops.empty()) {
+      values.push(calculate(values.pop(), ops.pop(), values.pop()));
     }
 
-    return operand.pop();
+    // pop off the answer
+    return values.pop();
   }
 
-  private String calculation(String num2, String operator, String num1) {
-    int first = Integer.parseInt(num1);
-    int second = Integer.parseInt(num2);
-    int result = 0;
-
-    switch (operator) {
-      case "+":
-        result = first + second;
-        break;
-      case "-":
-        result = first - second;
-        break;
-      case "*":
-        result = first * second;
-        break;
-      case "/":
-        result = first / second;
-        break;
+  // method to perform the specified operation
+  private static int calculate(int number2, char operation, int number1)
+      throws DivideByZeroException {
+    switch (operation) {
+      case '+':
+        return number1 + number2;
+      case '-':
+        return number1 - number2;
+      case '*':
+        return number1 * number2;
+      case '/':
+        if (number2 == 0) {
+          throw new DivideByZeroException("Cant / by 0");
+        }
+        return number1 / number2;
     }
-    return Integer.toString(result);
+    return 0;
   }
 
-  private int precedence(String operator) {
-    int precedence = 0;
-
-    switch (operator) {
-      case "+":
-      case "-":
-        precedence = 1;
-        break;
-      case "*":
-      case "/":
-        precedence = 2;
+  // method to determine precedence
+  private static boolean precedence(char op1, char op2) {
+    if (op2 == LEFT_PAREN || op2 == RIGHT_PAREN) {
+      return false;
     }
-    return precedence;
+    return (op1 != '*' && op1 != '/') || (op2 != '+' && op2 != '-');
   }
 }
