@@ -12,7 +12,7 @@ public class OperatorNode implements Node {
   private char op;
   private Node right, left;
   Date date = new Date();
-  private int i;
+  private static int i;
   SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
   private File file = new File(format.format(new Date()) + "-addr_instruction.txt");
 
@@ -48,8 +48,9 @@ public class OperatorNode implements Node {
   }
 
   @Override
-  public void post() {
-
+  public void post() throws IOException {
+    i = 0;
+    postOrder();
   }
 
   private String opEval(char operator) {

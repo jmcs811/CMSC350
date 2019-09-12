@@ -20,6 +20,9 @@ public class Evaluator {
       if (!isOperator(c)) {
         // handle error
       }
+      if (c == ' ') {
+        continue;
+      }
 
       if (!isOperator(c)) {
         stack.push(new OperandNode(c));

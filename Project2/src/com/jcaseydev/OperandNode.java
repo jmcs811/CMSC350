@@ -19,7 +19,6 @@ public class OperandNode implements Node {
     return String.valueOf(val);
   }
 
-  @Override
   public void post() {
   }
 }
