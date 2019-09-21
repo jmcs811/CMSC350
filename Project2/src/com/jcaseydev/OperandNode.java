@@ -1,3 +1,10 @@
+/////////////////////////////
+// Justin Casey
+// CMSC 350
+// Sep 14, 2019
+//
+// operand node
+
 package com.jcaseydev;
 
 public class OperandNode implements Node {
