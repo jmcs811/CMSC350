@@ -1,13 +1,21 @@
+/////////////////////////////
+// Filename: BSTSort.java
+// Author: Justin Casey
+// Data: 26 Sep 2019
+//
+// class implements the tree sort. Implements comparable to
+// sort different types of objects and not just integers.
+
 package com.jcaseydev;
 
 class BSTSort<T extends Comparable<T>> {
 
   Node rootNode;
-  StringBuilder sortedList = new StringBuilder();
+  private String sortedList = "";
 
   BSTSort(T value) {
     rootNode = new Node(value);
-    sortedList.append(" ");
+    sortedList = sortedList.concat(" ");
   }
 
   Node insert(Node node, T value) {
@@ -34,7 +42,7 @@ class BSTSort<T extends Comparable<T>> {
   String inOrder(Node node) {
     if (node != null) {
       inOrder(node.left);
-      sortedList.append(node.value.toString()).append(" ");
+      sortedList = sortedList.concat(node.value.toString() + " ");
       inOrder(node.right);
     }
     return sortedList.toString();
@@ -43,7 +51,7 @@ class BSTSort<T extends Comparable<T>> {
   String inOrderDesc(Node node) {
     if (node != null) {
       inOrderDesc(node.right);
-      sortedList.append(node.value.toString()).append(" ");
+      sortedList = sortedList.concat(node.value.toString() + " ");
       inOrderDesc(node.left);
     }
     return sortedList.toString();
