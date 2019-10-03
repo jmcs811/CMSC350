@@ -8,6 +8,7 @@
 package com.jcaseydev;
 
 class MalformedFractionException extends Exception {
+
   MalformedFractionException(String item) {
     super(item);
   }
