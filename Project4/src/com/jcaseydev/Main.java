@@ -1,5 +1,13 @@
 package com.jcaseydev;
 
+/////////////////////////////
+// Filename: Main.java
+// Author: Justin Casey
+// Data: 10 Oct 2019
+//
+// This is the class the defines the GUI and handles
+// the actions of the buttons
+
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -209,13 +217,13 @@ public class Main extends JFrame {
             JOptionPane.INFORMATION_MESSAGE
         );
       } catch (NullPointerException npe) {
-          JOptionPane.showMessageDialog(
-              null,
-              "Build Graph First",
-              "Message",
-              JOptionPane.INFORMATION_MESSAGE
-          );
-          classTextField.setText("");
+        JOptionPane.showMessageDialog(
+            null,
+            "Build Graph First",
+            "Message",
+            JOptionPane.INFORMATION_MESSAGE
+        );
+        classTextField.setText("");
       }
     });
 

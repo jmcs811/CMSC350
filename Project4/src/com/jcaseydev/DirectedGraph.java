@@ -1,5 +1,13 @@
 package com.jcaseydev;
 
+/////////////////////////////
+// Filename: DirectedGraph.java
+// Author: Justin Casey
+// Data: 10 Oct 2019
+//
+// Class that builds the graph and generates the
+// topological order
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
