@@ -1,5 +1,5 @@
-# CMSC350: Data Structures and Analysis
-This is the code for all four of the class projects. 
+# CMSC 350:
+# Data Structures and Analysis
 
 * Project 1 - Evaluate infix expressions
 * Project 2 - Evaluate postfix expressions
