@@ -1,5 +1,4 @@
-# CMSC 350:
-# Data Structures and Analysis
+# CMSC 350: Data Structures and Analysis
 
 * Project 1 - Evaluate infix expressions
 * Project 2 - Evaluate postfix expressions
